@@ -81,9 +81,11 @@ All the QA annotation files are unzipped and placed in the `data/vqa/raw` folder
 - Image Features
   
 Download the [spatial features](https://nlp.stanford.edu/data/gqa/spatialFeatures.zip) and [object features](https://nlp.stanford.edu/data/gqa/objectFeatures.zip) for GQA from its official website. **Spatial Features Files** include `gqa_spatial_*.h5` and `gqa_spatial_info.json`. **Object Features Files** include `gqa_objects_*.h5` and `gqa_objects_info.json`.  
-To make the input features consistent with those for VQA-v2, we provide a [script](data/gqa/gqa_feat_preproc.py) to transform `.h5` feature files into multiple `.npz` files, with each file corresponding to one image. 
+To make the input features consistent with those for VQA-v2, we provide a [script](https://github.com/MILVLG/openvqa/tree/master/data/gqa/gqa_feat_preproc.py) to transform `.h5` feature files into multiple `.npz` files, with each file corresponding to one image. 
 
 ```bash
+$ cd data/gqa
+
 $ unzip spatialFeatures.zip
 $ python gqa_feat_preproc.py --mode=spatial --spatial_dir=./spatialFeatures --out_dir=./feats/gqa-grid
 $ rm -r spatialFeatures.zip ./spatialFeatures
@@ -109,9 +111,7 @@ All the processed feature files are placed in the `data/gqa/feats` folder to for
 
 - Questions and Scene Graphs
 
-Download all the GQA [QA files](https://nlp.stanford.edu/data/gqa/questions1.2.zip) from the official site, including all the splits needed for training, validation and testing.  
-Download the [scene graphs files](https://nlp.stanford.edu/data/gqa/sceneGraphs.zip) for `train` and `val` splits from the official site.  
-Download  the [evaluation files](https://nlp.stanford.edu/data/gqa/eval.zip) from the official site, including the `train` and `val` choices supporting files for the evaluation.  
+Download all the GQA [QA files](https://nlp.stanford.edu/data/gqa/questions1.2.zip) from the official site, including all the splits needed for training, validation and testing. Download the [scene graphs files](https://nlp.stanford.edu/data/gqa/sceneGraphs.zip) for `train` and `val` splits from the official site. Download  the [supporting files](https://nlp.stanford.edu/data/gqa/eval.zip) from the official site, including the `train` and `val` choices supporting files for the evaluation.  
 
 All the question files and scene graph files are unzipped and placed in the `data/gqa/raw` folder to form the following tree structure:
 
@@ -147,5 +147,61 @@ All the question files and scene graph files are unzipped and placed in the `dat
 
 ### CLEVR
 
+- Images, Questions and Scene Graphs
 
+Download all the [CLEVR v1.0](https://dl.fbaipublicfiles.com/clevr/CLEVR_v1.0.zip) from the official site, including all the splits needed for training, validation and testing.  
 
+All the image files, question files and scene graph files are unzipped and placed in the `data/clevr/raw` folder to form the following tree structure:
+
+```
+|-- data
+	|-- clevr
+	|  |-- raw
+	|  |  |-- images
+	|  |  |  |-- train
+	|  |  |  |  |-- CLEVR_train_000000.json
+	|  |  |  |  |-- ...
+	|  |  |  |  |-- CLEVR_train_069999.json
+	|  |  |  |-- val
+	|  |  |  |  |-- CLEVR_val_000000.json
+	|  |  |  |  |-- ...
+	|  |  |  |  |-- CLEVR_val_014999.json
+	|  |  |  |-- test
+	|  |  |  |  |-- CLEVR_test_000000.json
+	|  |  |  |  |-- ...
+	|  |  |  |  |-- CLEVR_test_014999.json
+	|  |  |-- questions
+	|  |  |  |-- CLEVR_train_questions.json
+	|  |  |  |-- CLEVR_val_questions.json
+	|  |  |  |-- CLEVR_test_questions.json
+	|  |  |-- scenes
+	|  |  |  |-- CLEVR_train_scenes.json
+	|  |  |  |-- CLEVR_val_scenes.json
+```
+
+- Image Features
+  
+To make the input features consistent with those for VQA-v2, we provide a [script](https://github.com/MILVLG/openvqa/tree/master/data/clevr/clevr_extract_feat.py) to extract image features using a pre-trained ResNet-101 model like most previous works did and generate `.h5` files, with each file corresponding to one image. 
+
+```bash
+$ cd data/clevr
+
+$ python clevr_extract_feat.py --mode=all --gpu=0
+```
+
+All the processed feature files are placed in the `data/clevr/feats` folder to form the following tree structure:
+
+```
+|-- data
+	|-- clevr
+	|  |-- feats
+	|  |  |-- train
+	|  |  |  |-- 1.npz
+	|  |  |  |-- ...
+	|  |  |-- val
+	|  |  |  |-- 1.npz
+	|  |  |  |-- ...
+	|  |  |-- test
+	|  |  |  |-- 1.npz
+	|  |  |  |-- ...
+```
