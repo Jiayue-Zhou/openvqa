@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torch
 from openvqa.models.mac.adapter import Adapter
 from openvqa.models.mac.mac import MACUnit
 from torch.nn.init import xavier_uniform_
@@ -28,6 +29,7 @@ class Net(nn.Module):
             batch_first = True,
             bidirectional = True
         )
+        self.lstm_proj = nn.Linear(__C.HIDDEN_SIZE * 2, __C.HIDDEN_SIZE)
 
         self.adapter = Adapter(__C)
 
@@ -42,12 +44,17 @@ class Net(nn.Module):
         #lang_feat_mask = make_mask(ques_ix.unsqueeze(2))
         lang_feat = self.embedding(ques_ix)
         lang_feat, (h, _) = self.lstm(lang_feat)
+        lang_feat, _ = nn.utils.rnn.pad_packed_sequence(lang_feat, batch_first = True)
+        lang_feat = self.lstm_proj(lang_feat)
 
         img_feat, _, = self.adapter(frcn_feat, grid_feat, bbox_feat)
         h = h.permute(1, 0, 2).contiguous().view(self.b_size, -1)
         memory = self.backbone(lang_feat, h, img_feat)
 
-        return memory
+        out = torch.cat([memory, h], 1)
+        out = self.classifier(out)
+
+        return out
 
 
 
