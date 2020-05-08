@@ -49,10 +49,10 @@ class ReadUnit(nn.Module):
 
         def forward(self, memory, know, control):
             mem = self.mem(memory[-1]).unsqueeze(2)
-            concat = self.concat(torch.cat([mem * know, know], 1)).permute(0, 1, 2)
+            concat = self.concat(torch.cat([mem * know, know], 1)).permute(0, 2, 1)
 
             attn = concat * control[-1].unsqueeze(1)
-            attn - self.attn(attn).squeeze(2)
+            attn = self.attn(attn).squeeze(2)
             attn = F.softmax(attn, 1).unsqueeze(1)
 
             read = (attn * know).sum(2)
