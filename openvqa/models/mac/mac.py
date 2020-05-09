@@ -1,7 +1,7 @@
 import torch
 from torch.autograd import Variable
 from torch import nn
-from torch.nn.init import kaming_uniform_, xavier_uniform_, normal
+from torch.nn.init import kaiming_uniform_, xavier_uniform_, normal
 import torch.nn.functional as F
 
 def linear(in_dim, out_dim, bias = True):

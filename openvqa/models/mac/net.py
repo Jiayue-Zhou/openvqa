@@ -43,6 +43,8 @@ class Net(nn.Module):
     def forward(self, frcn_feat, grid_feat, bbox_feat, ques_ix):
         #lang_feat_mask = make_mask(ques_ix.unsqueeze(2))
         lang_feat = self.embedding(ques_ix)
+        lang_feat = nn.utils.rnn.pack_padded_sequence(lang_feat, len(ques_ix),
+                                                batch_first=True)
         lang_feat, (h, _) = self.lstm(lang_feat)
         lang_feat, _ = nn.utils.rnn.pad_packed_sequence(lang_feat, batch_first = True)
         lang_feat = self.lstm_proj(lang_feat)

@@ -40,7 +40,7 @@ def parse_args():
                            'mfb,'
                            'mfh,'
                            'butd,'
-                           'mac'
+                           'mac,'
                            '}'
                         ,
                       type=str, required=True)
