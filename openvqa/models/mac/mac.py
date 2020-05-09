@@ -49,7 +49,8 @@ class ReadUnit(nn.Module):
 
         def forward(self, memory, know, control):
             mem = self.mem(memory[-1]).unsqueeze(2)
-            concat = self.concat(torch.cat([mem * know, know], 1)).permute(0, 2, 1)
+            concat = self.concat(torch.cat([mem * know, know], 1) \
+                                 .permute(0, 2, 1))
 
             attn = concat * control[-1].unsqueeze(1)
             attn = self.attn(attn).squeeze(2)
@@ -113,7 +114,7 @@ class MACUnit(nn.Module):
         self.dropout = __C.DROPOUT
 
     def get_mask(self, x, dropout):
-        mask = torch.empty_like(x).bernouli(1 - dropout)
+        mask = torch.empty_like(x).bernoulli_(1 - dropout)
         mask = mask / (1 - dropout)
 
         return mask
@@ -125,7 +126,7 @@ class MACUnit(nn.Module):
         memory = self.mem_0.expand(b_size, self.dim)
 
         if self.training:
-            control_mask = self.getmask(control, self.dropout)
+            control_mask = self.get_mask(control, self.dropout)
             memory_mask = self.get_mask(memory, self.dropout)
             control = control * control_mask
             memory = memory * memory_mask
