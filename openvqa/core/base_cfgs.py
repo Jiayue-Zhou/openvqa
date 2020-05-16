@@ -263,6 +263,7 @@ class BaseCfgs(PATH):
         self.EVAL_BATCH_SIZE = int(self.SUB_BATCH_SIZE / 2)
 
 
+
         # ------------ Loss process
         assert self.LOSS_FUNC in ['ce', 'bce', 'kld', 'mse']
         assert self.LOSS_REDUCTION in ['none', 'elementwise_mean', 'sum']

@@ -1,7 +1,13 @@
+# --------------------------------------------------------
+# OpenVQA
+# Written by Jiayue Zhou https://github.com/Jiayue-Zhou
+# --------------------------------------------------------
+
 from openvqa.core.base_cfgs import BaseCfgs
 class Cfgs(BaseCfgs):
     def __init__(self):
         super(Cfgs, self).__init__()
+
         self.HIDDEN_SIZE = 512
         self.DROPOUT = 0.15
         self.MEMORY_GATE = False

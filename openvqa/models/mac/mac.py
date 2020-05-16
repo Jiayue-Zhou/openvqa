@@ -1,7 +1,12 @@
+# --------------------------------------------------------
+# OpenVQA
+# Written by Jiayue Zhou https://github.com/Jiayue-Zhou
+# based on the implementation in https://github.com/rosinality/mac-network-pytorch
+# --------------------------------------------------------
+
 import torch
-from torch.autograd import Variable
 from torch import nn
-from torch.nn.init import kaiming_uniform_, xavier_uniform_, normal
+from torch.nn.init import xavier_uniform_
 import torch.nn.functional as F
 
 def linear(in_dim, out_dim, bias = True):
@@ -27,7 +32,7 @@ class ControlUnit(nn.Module):
         position_aware = self.position_aware[step](question)
 
         control_question = torch.cat([control, position_aware], 1)
-        control_question = self. control_question(control_question)
+        control_question = self.control_question(control_question)
         control_question = control_question.unsqueeze(1)
 
         context_prod = control_question * context
